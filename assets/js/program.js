@@ -43,6 +43,14 @@ document.querySelector("#scale2").onmousemove = (function() {
   engin.setScale(2, this.value);
 });
 
+document.querySelector("#alpha1").onmousemove = (function() {
+  engin.setAlpha(1, this.value);
+});
+
+document.querySelector("#alpha2").onmousemove = (function() {
+  engin.setAlpha(2, this.value);
+});
+
 document.querySelector("#src1").onchange = (function() {
   engin.setSource(1, this.files[0]);
 });
@@ -88,8 +96,11 @@ function veeJsEngin(video1, video2, img1, img2, output) {
   this.canvas = document.querySelector(output);
   this.context = this.canvas.getContext("2d");
 
-  this.video1Alpah = 0.1;
-  this.video2Alpah = 0.0;
+  this.video1Alpaha = 1.0;
+  this.video2Alpaha = 0.0;
+
+  this.video1Alpahb = 0.5;
+  this.video2Alpahb = 0.5;
 
   this.video1Rotation = 0;
   this.video2Rotation = 0;
@@ -122,7 +133,7 @@ veeJsEngin.prototype.tick = function(){
 veeJsEngin.prototype.drawSource = function(id){
   //var t = 0.3;
   if (id == 1) {
-    this.context.globalAlpha = this.video1Alpah;
+    this.context.globalAlpha = (parseFloat(this.video1Alpaha) + parseFloat(this.video1Alpahb)) / 2
     this.context.translate(this.canvas.width/2, this.canvas.height/2);
     this.context.rotate(this.video1Rotation);
     this.context.translate(-this.canvas.width/2, -this.canvas.height/2);
@@ -150,7 +161,7 @@ veeJsEngin.prototype.drawSource = function(id){
     // Restore image data within the canvas.
     this.context.putImageData(img, 0, 0);
   } else if (id == 2) {
-    this.context.globalAlpha = this.video2Alpah;
+    this.context.globalAlpha = (parseFloat(this.video2Alpaha) + parseFloat(this.video2Alpahb)) / 2
     this.context.translate(this.canvas.width/2, this.canvas.height/2);
     this.context.rotate(this.video2Rotation);
     this.context.translate(-this.canvas.width/2, -this.canvas.height/2);
@@ -186,8 +197,8 @@ veeJsEngin.prototype.drawSource = function(id){
 veeJsEngin.prototype.crossfade = function(value, max){
   var x = parseInt(value) / parseInt(max);
   // Use an equal-power crossfading curve:
-  this.video1Alpah = Math.cos(x * 0.5*Math.PI);
-  this.video2Alpah = Math.cos((1.0 - x) * 0.5*Math.PI);  
+  this.video1Alpaha = Math.cos(x * 0.5*Math.PI);
+  this.video2Alpaha = Math.cos((1.0 - x) * 0.5*Math.PI);  
 };
 
 veeJsEngin.prototype.setSpeed = function(id, value){
@@ -195,6 +206,14 @@ veeJsEngin.prototype.setSpeed = function(id, value){
     this.video1.playbackRate = value;
   } else if (id == 2) {
     this.video2.playbackRate = value;
+  }
+}
+
+veeJsEngin.prototype.setAlpha = function(id, value){
+  if (id == 1) {
+    this.video1Alpahb = value;
+  } else if (id == 2) {
+    this.video2Alpahb = value;
   }
 }
 
