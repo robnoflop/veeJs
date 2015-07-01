@@ -39,6 +39,11 @@
 }
 
 
+.lightGray{
+	color:#aaa;
+}
+
+
 .btn[disabled]{
 	cursor: inherit;
 }

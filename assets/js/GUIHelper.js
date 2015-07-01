@@ -157,18 +157,178 @@ function GUIInit(){
 	$('#b2').slider({reversed:true}).on('slide', function(event){
 		engin.setRGBFilter(2,$('#r2').val(),$('#g2').val(),$('#b2').val());
 	});
+}
+
+var midiObj = new Midi();
+midiObj.initMidi();
+
+
+var midiLearn = false;
+var midiLearnObj = null;
+
+
+// register context handler
+$(document).ready(function(){
+    $(document).bind("contextmenu",function(e){        
+        e.preventDefault();        
+        midiLearn = true;
+
+
+        $('#midiLearnOut').css('color','#0A0');
+
+        var targetElement = null;
+
+        if(e.target.id !== '' && e.target.id !== null)
+        	targetElement = e.target.id;
 
 
 
+        else if (
+        	$(e.target).parent().parent().next().attr('id') !== null &&
+        	$(e.target).parent().parent().next().attr('id') !== 'undefined'){
+        	targetElement = $(e.target).parent().parent().next().attr('id');
+        }
+        else
+        	return;
 
 
 
+        midiLearnObj = targetElement;
+    });
+});
+
+
+// MIDI
+
+receivedMidi = function(midi){
+
+	// execute only this if learning mode
+	if(midiLearn){
+
+		midiObj.defaultMap[midiLearnObj] = {
+			0: midi.data[0], 
+			1: midi.data[1] 
+		};
+
+		midiLearn = false;
+
+		$('#midiLearnOut').css('color','#AAA');
+		return;
+	}
+
+	var UIElem= null;
+
+	// look up midi message and find UI element that is assigned
+	for(midiDest in midiObj.defaultMap){
+		if(midiObj.defaultMap[midiDest][0] === midi.data[0] &&
+		   midiObj.defaultMap[midiDest][1] === midi.data[1]){
+			UIElem = midiDest;
+			break;
+		}
+	}
+
+	switch(UIElem) {
+
+		case 'crossfadeSlide':
+			$('#crossfadeSlide')
+				.slider('setValue', midi.data[2]/1.27, true);
+		break;
+
+		case 'source1Gain':
+			$('#source1Gain')
+				.slider('setValue', midi.data[2]/127, true);
+		break;
+
+		case 'source2Gain':
+			$('#source2Gain')
+				.slider('setValue', midi.data[2]/127, true);
+		break;
+
+
+		case 'source1Alpha':
+			$('#source1Alpha')
+				.slider('setValue', midi.data[2]/127, true);
+		break;
+
+
+		case 'source2Alpha':
+			$('#source2Alpha')
+				.slider('setValue', midi.data[2]/127, true);
+		break;
+
+
+		case 'play1':
+			$('#play1').trigger('click');
+		break;
+
+
+		case 'play2':
+			$('#play2').trigger('click');
+		break;
+
+
+		case 'r1': 
+			$('#r1').slider('setValue', midi.data[2]/127, true);
+		break;
+
+		
+		case 'g1': 
+			$('#g1').slider('setValue', midi.data[2]/127, true);
+		break;
+			
+
+		case 'b1': 
+			$('#b1').slider('setValue', midi.data[2]/127, true);
+		break;
+
+
+		case 'r2': 
+			$('#r2').slider('setValue', midi.data[2]/127, true);
+		break;
+
+
+		case 'g2': 
+			$('#g2').slider('setValue', midi.data[2]/127, true);
+		break;
+
+
+		case 'b2': 
+			$('#b2').slider('setValue', midi.data[2]/127, true);
+		break;
+
+
+		case 'scale1': 
+			$('#scale1').val(midi.data[2]/127*6).trigger('change'); 
+		break;
+
+
+		case 'rotation1': 
+			$('#rotation1').val( midi.data[2]/127*360 ).trigger('change'); 
+		break;
+
+
+		case 'source1SpeedSlide': 
+			$('#source1SpeedSlide').val( midi.data[2]/127*4 ).trigger('change'); 
+		break;
 
 
 
+		case 'scale2': 
+			$('#scale2').val( midi.data[2]/127*6 ).trigger('change'); 
+		break;
 
 
+		case 'rotation2': 
+			$('#rotation2').val( midi.data[2]/127*360 ).trigger('change'); 
+		break;
 
 
-	
+		case 'source2SpeedSlide': 
+			$('#source2SpeedSlide').val( midi.data[2]/127*4 ).trigger('change');
+		break;
+
+
+	  default:
+	  	console.log('unkown midi responder: '+UIElem+' '+midi.data[0]+' '+midi.data[1]);
+	} 
 }
