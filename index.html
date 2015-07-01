@@ -1,19 +1,323 @@
-<html>
+<!Doctype html>
+<html lang="en">
 	<head>
-		<title>Beleg 2</title>
+		<title>VeeJS</title>
 		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap-slider.min.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/layout.css">
 	</head>
 	<body>
-		<div id="wrapper">
-			<video id="video1" controls>
-			</video>
-			<video id="video2" controls>>
-			</video>
+		<div class="container">
+			<div class="row theater">
+				<div class="col-xs-6 col-xs-offset-3">
+					<canvas id="output"></canvas>
+				</div>
+			</div><!-- end of row output -->
+
+			<div class="row">
+				<div class="col-xs-2 text-left">
+					<button id="play1" class="btn btn-success">Play</button> 
+					<br/><br/>
+					<input type="file" id="src1">
+					<div class="row marginTopExtra">
+						<div class="col-xs-3">
+							<input 
+								id="r1" 
+								type="text" 
+								data-slider-id="r1Div"
+								data-slider-min="0" 
+								data-slider-max="1" 
+								data-slider-step="0.05" 
+								data-slider-value="1" 
+								data-slider-orientation="vertical"
+								data-slider-tooltip="hide"
+							/>
+						</div>
+						<div class="col-xs-3">
+							<input 
+								id="g1" 
+								type="text" 
+								data-slider-id="g1Div"
+								data-slider-min="0" 
+								data-slider-max="1" 
+								data-slider-step="0.05" 
+								data-slider-value="1" 
+								data-slider-orientation="vertical"
+								data-slider-tooltip="hide"
+							/>
+						</div>
+						<div class="col-xs-3">
+							<input 
+								id="b1" 
+								type="text" 
+								data-slider-id="b1Div"
+								data-slider-min="0" 
+								data-slider-max="1" 
+								data-slider-step="0.05" 
+								data-slider-value="1" 
+								data-slider-orientation="vertical"
+								data-slider-tooltip="hide"
+							/>
+						</div>
+					</div><!-- end row rgb filter -->
+				</div>
+
+				<div class="col-xs-1 text-center">
+					<button type="button" class="btn btn-xs btn-default marginBottomNormal" 
+						disabled="disabled">
+						Volume
+					</button><br/>
+					<input 
+						id="source1Gain" 
+						type="text" 
+						data-slider-min="0" 
+						data-slider-max="1" 
+						data-slider-step="0.05" 
+						data-slider-value="1" 
+						data-slider-orientation="vertical"
+					/>
+				</div>
+
+				<div class="col-xs-1 text-center">
+					<button type="button" 
+						class="btn btn-xs btn-default marginBottomNormal" disabled="disabled">
+						Alpha
+					</button><br/>
+					<input 
+						id="source1Alpha" 
+						type="text" 
+						data-slider-min="0" 
+						data-slider-max="1" 
+						data-slider-step="0.05" 
+						data-slider-value="1" 
+						data-slider-orientation="vertical"
+					/>
+				</div>
+
+				<div class="col-xs-4 text-center">
+					<div class="row">
+						<div class="col-xs-*">
+							<button type="button" 
+								class="btn btn-xs btn-default marginBottomNormal" 
+								disabled="disabled">
+								Crossfade
+							</button><br/>
+							<input 
+								id="crossfadeSlide" 
+								type="text" 
+								data-slider-min="0" 
+								data-slider-max="100" 
+								data-slider-step="0.5" 
+								data-slider-value="50" 
+							/>
+						</div>						
+					</div><!-- end row crossfade -->
+
+					<div class="row marginTopNormal">	
+						<div class="col-xs-3">
+							<button type="button" 
+								class="btn btn-xs btn-default marginBottomMini" 
+								disabled="disabled">
+									Scale
+							</button>
+							<br/>
+							<input 
+								class="dial"
+								id="scale1"
+								type="text" 
+								class="dial" 
+								data-min="0.1" 
+								data-max="6.0" 
+								data-step="0.1"
+							/>
+						</div>
+						<div class="col-xs-3">
+							<button type="button" 
+								class="btn btn-xs btn-default marginBottomMini" 
+								disabled="disabled">
+									Rotate
+							</button>
+							<br/>
+							<input 
+								class="dial"
+								id="rotation1"
+								type="text" 
+								class="dial" 
+								data-min="0" 
+								data-max="360" 
+								data-step="1"
+							/>
+						</div>
+						<div class="col-xs-3">
+							<button type="button" 
+								class="btn btn-xs btn-default marginBottomMini" 
+								disabled="disabled">
+									Scale
+							</button>
+							<br/>
+							<input 
+								class="dial"
+								id="scale2"
+								type="text" 
+								class="dial" 
+								data-min="0.1" 
+								data-max="6.0" 
+								data-step="0.1"
+							/>
+						</div>
+						<div class="col-xs-3">
+							<button type="button" 
+								class="btn btn-xs btn-default marginBottomMini" 
+								disabled="disabled">
+									Rotate
+							</button>
+							<br/>
+							<input 
+								class="dial"
+								id="rotation2"
+								type="text" 
+								class="dial" 
+								data-min="0" 
+								data-max="360" 
+								data-step="1"
+							/>
+						</div>
+					</div><!-- end row transformations -->
+					
+
+					<div class="row">	
+						<div class="col-xs-3">
+							<button type="button" 
+								class="btn btn-xs btn-default marginBottomMini" 
+								disabled="disabled">
+									Speed
+							</button>
+							<br/>
+							<input 
+								class="dial"
+								id="source1SpeedSlide"
+								type="text" 
+								class="dial" 
+								data-min="0" 
+								data-max="4" 
+								data-step=".1"
+							/>
+						</div>
+
+						<div class="col-xs-3 col-xs-offset-6">
+							<button type="button" 
+								class="btn btn-xs btn-default marginBottomMini" 
+								disabled="disabled">
+									Speed
+							</button>
+							<br/>
+							<input 
+								class="dial"
+								id="source2SpeedSlide"
+								type="text" 
+								class="dial" 
+								data-min="0" 
+								data-max="4" 
+								data-step=".1"
+							/>
+						</div>						
+					</div><!-- end row speed dials -->
+				
+				</div><!-- end middle controls -->
+
+				<div class="col-xs-1 text-center">
+					<button type="button" class="btn btn-xs btn-default marginBottomNormal" 
+						disabled="disabled">
+						Alpha
+					</button><br/>
+					<input 
+						id="source2Alpha" 
+						type="text" 
+						data-slider-min="0" 
+						data-slider-max="1" 
+						data-slider-step="0.05" 
+						data-slider-value="1" 
+						data-slider-orientation="vertical"
+					/>
+				</div>
+
+				<div class="col-xs-1 text-center">
+					<button type="button" class="btn btn-xs btn-default marginBottomNormal" 
+						disabled="disabled">
+						Volume
+					</button><br/>
+					<input 
+						id="source2Gain" 
+						type="text" 
+						data-slider-min="0" 
+						data-slider-max="1" 
+						data-slider-step="0.05" 
+						data-slider-value="1" 
+						data-slider-orientation="vertical"
+					/>
+				</div>
+
+				<div class="col-xs-2 text-right">					
+					<button id="play2" class="btn btn-success">Play</button>
+					<br/><br/>
+					<input type="file" id="src2">
+					<div class="row marginTopExtra">
+						<div class="col-xs-3 col-xs-offset-3">
+							<input 
+								id="r2" 
+								type="text" 
+								data-slider-id="r2Div"
+								data-slider-min="0" 
+								data-slider-max="1" 
+								data-slider-step="0.05" 
+								data-slider-value="1" 
+								data-slider-orientation="vertical"
+								data-slider-tooltip="hide"
+							/>
+						</div>
+						<div class="col-xs-3">
+							<input 
+								id="g2" 
+								type="text" 
+								data-slider-id="g2Div"
+								data-slider-min="0" 
+								data-slider-max="1" 
+								data-slider-step="0.05" 
+								data-slider-value="1" 
+								data-slider-orientation="vertical"
+								data-slider-tooltip="hide"
+							/>
+						</div>
+						<div class="col-xs-3">
+							<input 
+								id="b2" 
+								type="text" 
+								data-slider-id="b2Div"
+								data-slider-min="0" 
+								data-slider-max="1" 
+								data-slider-step="0.05" 
+								data-slider-value="1" 
+								data-slider-orientation="vertical"
+								data-slider-tooltip="hide"
+							/>
+						</div>
+					</div><!-- end row rgb filter -->
+				</div>
+			</div><!-- end of row controls-->
+
+
+		</div><!-- end container -->
+
+
+		<!-- hidden objects -->
+		<div class="invisible">
+			<video id="video1"></video>
+			<video id="video2"></video>
 			<img src="" alt="" id="img1">
 			<img src="" alt="" id="img2">
-			<canvas id="output"></canvas>
 		</div>
+<<<<<<< Updated upstream
 		<input type="file" id="src1">
 		<input type="file" id="src2">
 		<button id="play1">play1</button> 
@@ -57,6 +361,13 @@
 		<span>b 2:</span> 
 		<input id="b2" min="0" max="255" step="1" value="255" type="range"> <br>
 		<button id="rgb2">set rgb2</button><br>
+=======
+>>>>>>> Stashed changes
 	</body>
 </html>
 <script type="text/javascript" src="assets/js/program.js"></script>
+<script type="text/javascript" src="assets/js/jquery.js"></script>
+<script type="text/javascript" src="assets/js/GUIHelper.js"></script>
+<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/js/bootstrap-slider.min.js"></script>
+<script type="text/javascript" src="assets/js/jquery.knob.min.js"></script>

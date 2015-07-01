@@ -1,3 +1,86 @@
-video, img {
+.invisible {
     display: none;
 }
+
+#output{
+	width: 100%;
+}
+
+.theater{
+	background-color: black;
+	margin-bottom: 30px;
+	padding: 20px 0;
+}
+
+.slider-horizontal .slider-selection{
+	background: transparent;
+	box-shadow: none;
+}
+
+.slider-vertical .slider-track-high {
+	background: rgba(0,0,0,0.1);
+}
+
+
+.marginBottomNormal{
+	margin-bottom: 20px;
+}
+
+.marginBottomMini{
+	margin-bottom: 10px;
+}
+
+.marginTopNormal{
+	margin-top: 20px;
+}
+
+.marginTopExtra{
+	margin-top: 75px;
+}
+
+
+.btn[disabled]{
+	cursor: inherit;
+}
+
+
+#r1Div, #g1Div, #b1Div,
+#r2Div, #g2Div, #b2Div{
+	height: 100px;
+}
+
+#r1Div .slider-track-high,
+#r2Div .slider-track-high{
+	background-color: rgba(255,0,0,0.2);
+}
+
+#g1Div .slider-track-high,
+#g2Div .slider-track-high{
+	background-color: rgba(0,255,0,0.2);
+}
+
+#b1Div .slider-track-high,
+#b2Div .slider-track-high{
+	background-color: rgba(0,0,255,0.2);
+}
+
+
+#r1Div .slider-handle,
+#r2Div .slider-handle{
+	background: transparent;
+	background-color: rgb(170,0,0);
+
+}
+
+#g1Div .slider-handle,
+#g2Div .slider-handle{
+	background: transparent;
+	background-color: rgb(0,170,0);
+}
+
+#b1Div .slider-handle,
+#b2Div .slider-handle{
+	background: transparent;
+	background-color: rgb(0,0,170);
+}
+

@@ -3,22 +3,15 @@ window.onload = load;
 var engin;
 
 function load() {
+  GUIInit();
   engin = new veeJsEngin("#video1", "#video2", "#img1", "#img2", "#output");
   engin.tick();
 }
 
-document.querySelector("#crossfadeSlide").onmousemove = (function() {
-  engin.crossfade(this.value, this.max);
-});
 
-document.querySelector("#source1SpeedSlide").onmousemove = (function() {
-  engin.setSpeed(1, this.value);
-});
 
-document.querySelector("#source2SpeedSlide").onmousemove = (function() {
-  engin.setSpeed(2, this.value);
-});
 
+<<<<<<< Updated upstream
 document.querySelector("#source1Gain").onmousemove = (function() {
   engin.setVolume(1, this.value);
 });
@@ -80,6 +73,8 @@ document.querySelector("#rgb2").onclick = (function() {
                     document.querySelector("#g2").value,
                     document.querySelector("#b2").value);
 });
+=======
+>>>>>>> Stashed changes
 
 
 
@@ -96,11 +91,20 @@ function veeJsEngin(video1, video2, img1, img2, output) {
   this.canvas = document.querySelector(output);
   this.context = this.canvas.getContext("2d");
 
+<<<<<<< Updated upstream
   this.video1Alpaha = 1.0;
   this.video2Alpaha = 0.0;
 
   this.video1Alpahb = 0.5;
   this.video2Alpahb = 0.5;
+=======
+  this.video1Alpah = 1.0;
+  this.video2Alpah = 1.0;
+
+  this.video1AlphaEffect = 1;
+  this.video2AlphaEffect = 1;
+
+>>>>>>> Stashed changes
 
   this.video1Rotation = 0;
   this.video2Rotation = 0;
@@ -126,10 +130,11 @@ veeJsEngin.prototype.tick = function(){
   requestAnimationFrame(veeJsEnginHelper.tick);
 
   veeJsEnginHelper.context.clearRect(0, 0, veeJsEnginHelper.canvas.width, veeJsEnginHelper.canvas.height);
-  veeJsEnginHelper.drawSource(1);
-  veeJsEnginHelper.drawSource(2);
+  veeJsEnginHelper.drawSource();
+
 };
 
+<<<<<<< Updated upstream
 veeJsEngin.prototype.drawSource = function(id){
   //var t = 0.3;
   if (id == 1) {
@@ -144,20 +149,12 @@ veeJsEngin.prototype.drawSource = function(id){
     } else {
       this.context.drawImage(this.img1, 0, 0, this.canvas.width, this.canvas.height);
     }
+=======
+veeJsEngin.prototype.drawSource = function(){
+>>>>>>> Stashed changes
 
-    var img = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height); // Pull a rectangle of image data from context
-    var data = img.data; // Image image data array.
-    var len = data.length; // Length of data array.
 
-    // Loop through image data array.
-    // Apply color trasform to each block of RGBA values.
-    // Applied as: c = c * cmodifier + coffset.
-    for (i = 0; i < len; i++) {
-        data[i] = data[i++] * this.r1;//(1-t) + (this.r1*t);
-        data[i] = data[i++] * this.g1;//(1-t) + (this.g1*t);
-        data[i] = data[i++] * this.b1;//(1-t) + (this.b1*t);
-    }
-
+<<<<<<< Updated upstream
     // Restore image data within the canvas.
     this.context.putImageData(img, 0, 0);
   } else if (id == 2) {
@@ -172,24 +169,62 @@ veeJsEngin.prototype.drawSource = function(id){
     } else {
       this.context.drawImage(this.img2, 0, 0, this.canvas.width, this.canvas.height);
     }
+=======
+  this.context.globalAlpha = this.video1Alpah*this.video1AlphaEffect;
+  this.context.translate(this.canvas.width/2, this.canvas.height/2);
+  this.context.rotate(this.video1Rotation);
+  this.context.scale(this.video1Scale,this.video1Scale);
+  this.context.translate(-this.canvas.width/2, -this.canvas.height/2);
+  
+>>>>>>> Stashed changes
 
-    var img = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height); // Pull a rectangle of image data from context
-    var data = img.data; // Image image data array.
-    var len = data.length; // Length of data array.
-
-    // Loop through image data array.
-    // Apply color trasform to each block of RGBA values.
-    // Applied as: c = c * cmodifier + coffset.
-    for (i = 0; i < len; i++) {
-      data[i] = data[i++] * this.r2;//(1-t) + (this.r2*t);
-      data[i] = data[i++] * this.g2;//(1-t) + (this.g2*t);
-      data[i] = data[i++] * this.b2;//(1-t) + (this.b2*t);
-    }
-
-    // Restore image data within the canvas.
-    this.context.putImageData(img, 0, 0);
-
+  if (this.source1IsVideo) {
+    this.context.drawImage(this.video1, 0, 0, this.canvas.width, this.canvas.height);
+  } else {
+    this.context.drawImage(this.img1, 0, 0, this.canvas.width, this.canvas.height);
   }
+
+
+  this.context.setTransform(1, 0, 0, 1, 0, 0);
+
+
+
+  this.context.globalAlpha = this.video2Alpah*this.video2AlphaEffect;
+  this.context.translate(this.canvas.width/2, this.canvas.height/2);
+  this.context.rotate(this.video2Rotation);
+  this.context.scale(this.video2Scale,this.video2Scale);
+  this.context.translate(-this.canvas.width/2, -this.canvas.height/2);
+  
+
+  if (this.source2IsVideo) {
+    this.context.drawImage(this.video2, 0, 0, this.canvas.width, this.canvas.height);
+  } else {
+    this.context.drawImage(this.img2, 0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  var img = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height); // Pull a rectangle of image data from context
+  var data = img.data; // Image image data array.
+  var len = data.length; // Length of data array.
+
+  // Loop through image data array.
+  // Apply color trasform to each block of RGBA values.
+  // Applied as: c = c * cmodifier + coffset.
+  
+  var filterStrength2 = this.video2AlphaEffect * this.video2Alpah;
+  var filterStrength1 = Math.max(0,this.video1AlphaEffect-filterStrength2);
+
+
+
+  for (i = 0; i < len; i++) {
+    data[i] = data[i++] * (this.r1 * filterStrength1 + this.r2 * filterStrength2);                             
+    data[i] = data[i++] * (this.g1 * filterStrength1 + this.g2 * filterStrength2);
+    data[i] = data[i++] * (this.b1 * filterStrength1 + this.b2 * filterStrength2);
+  }
+
+  // Restore image data within the canvas.
+  this.context.putImageData(img, 0, 0);
+
+  
   // reset current transformation matrix to the identity matrix
   this.context.setTransform(1, 0, 0, 1, 0, 0);
 };
@@ -197,8 +232,17 @@ veeJsEngin.prototype.drawSource = function(id){
 veeJsEngin.prototype.crossfade = function(value, max){
   var x = parseInt(value) / parseInt(max);
   // Use an equal-power crossfading curve:
+<<<<<<< Updated upstream
   this.video1Alpaha = Math.cos(x * 0.5*Math.PI);
   this.video2Alpaha = Math.cos((1.0 - x) * 0.5*Math.PI);  
+=======
+  //this.video1Alpah = Math.cos(x * 0.5*Math.PI);
+  //this.video2Alpah = Math.cos((1.0 - x) * 0.5*Math.PI);
+
+  //Linear is better here
+  this.video1Alpah = 1;
+  this.video2Alpah = x;
+>>>>>>> Stashed changes
 };
 
 veeJsEngin.prototype.setSpeed = function(id, value){
@@ -240,6 +284,17 @@ veeJsEngin.prototype.setScale = function(id, value){
     this.video2Scale = value;
   }
 };
+
+
+veeJsEngin.prototype.setAlphaEffect = function(id, value){
+  var val = Math.min(1, Math.max(value,0));
+  if (id == 1) {
+    this.video1AlphaEffect = val;
+  } else if (id == 2) {
+    this.video2AlphaEffect = val;
+  }
+};
+
 
 veeJsEngin.prototype.startStopVideo = function(id){
   if(id == 1) {
